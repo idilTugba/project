@@ -1,5 +1,8 @@
 import dbConnect from "@/lib/dbConnect";
 import User from "@/models/User";
+import jwt from "jsonwebtoken";
+
+const secretKey = process.env.Secret_Key;
 
 export async function POST(req: Request) {
   await dbConnect();
@@ -9,7 +12,13 @@ export async function POST(req: Request) {
     const user = await new User(data);
     await user.save();
 
-    return Response.json({ user }, { status: 201 });
+    const token = jwt.sign({ userId: user.id }, `${secretKey}`, {
+      expiresIn: "2h",
+    });
+    return Response.json(
+      { user: { name: user.firstName, token } },
+      { status: 201 }
+    );
   } catch (error) {
     if (error instanceof Error) {
       return Response.json(

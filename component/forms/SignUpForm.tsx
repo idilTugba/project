@@ -1,12 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useDispatch } from "react-redux";
+
 import Input from "./elements/Input";
 import Button from "./elements/Button";
+
+import { loginSuccess } from "@/lib/redux/reducers/userSlice";
 
 enum genderEnum {
   male = "male",
@@ -47,6 +52,9 @@ const registerValSchema = yup
   .required();
 
 export default function SignUpForm() {
+  const router = useRouter();
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
@@ -62,8 +70,21 @@ export default function SignUpForm() {
         body: JSON.stringify(data),
       });
 
-      const dataRes = await res.json();
-      console.log("dataRes" + dataRes);
+      const { user } = await res.json();
+
+      if (!user) {
+        console.log("Bağlantı başarısız");
+      } else {
+        dispatch(loginSuccess(user));
+        sessionStorage.setItem("user", user);
+        alert(
+          `Hoşgeldin ${
+            data.firstName + " " + data.lastName
+          }, Ana sayfaya yönlendiriliyorsunuz.`
+        );
+
+        router.push("/");
+      }
     } catch (error) {
       console.log(error);
     }

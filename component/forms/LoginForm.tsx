@@ -5,10 +5,12 @@ import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useRouter } from "next/navigation";
 
-import Label from "./elements/Label";
 import Input from "./elements/Input";
 import Button from "./elements/Button";
+import { loginSuccess } from "@/lib/redux/reducers/userSlice";
+import { useDispatch } from "react-redux";
 
 interface formType {
   email: string;
@@ -28,6 +30,9 @@ const loginValSchema = yup
   .required();
 
 export default function LoginForm() {
+  const router = useRouter();
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
@@ -35,7 +40,29 @@ export default function LoginForm() {
   } = useForm<formType>({
     resolver: yupResolver(loginValSchema),
   });
-  const onSubmit: SubmitHandler<formType> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<formType> = async (data) => {
+    try {
+      const res = await fetch("http://localhost:3000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const { message, user } = await res.json();
+
+      if (!user) {
+        console.log("Bağlantı başarısız");
+      } else {
+        dispatch(loginSuccess(user));
+        sessionStorage.setItem("user", user);
+        alert(`${message} , Hoşgeldin ${user.userName}`);
+
+        router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="form-page__content lg:py-50">
