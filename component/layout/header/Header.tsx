@@ -3,12 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { useAppSelector } from "@/lib/redux/Hooks";
+import SignOut from "@/component/forms/SignOut";
 
 export default function Header() {
   const [activeMobileMenu, setActiveMobileMenu] = useState<boolean>(false);
 
   const [scrollPosition, setScrollPosition] = useState<number>(0);
-
+  const { user, isAuthenticated } = useAppSelector((state) => state.auth);
+  console.log(user);
   useEffect(() => {
     const handleScroll = () => {
       const position = window.scrollY;
@@ -34,12 +37,7 @@ export default function Header() {
             <div className="header-left d-flex items-center">
               <div className="header__logo pr-30 xl:pr-20 md:pr-0">
                 <Link href="/">
-                  <Image
-                    width={140}
-                    height={50}
-                    src="/assets/img/general/logo-black.svg"
-                    alt="logo"
-                  />
+                  <Image width={50} height={50} src="/logo.png" alt="logo" />
                 </Link>
               </div>
 
@@ -72,15 +70,27 @@ export default function Header() {
               </div>
 
               <div className="header-right__buttons d-flex items-center ml-30 xl:ml-20 lg:d-none">
-                <Link href="/login" className="button -underline text-dark-1">
-                  Log in
-                </Link>
-                <Link
-                  href="/signup"
-                  className="button h-50 px-40 -purple-1 -rounded text-white ml-30 xl:ml-20"
-                >
-                  Sign up
-                </Link>
+                {isAuthenticated ? (
+                  <>
+                    <p>Hoşgeldin {user}</p>
+                    <SignOut />
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/login"
+                      className="button -underline text-dark-1"
+                    >
+                      Log in
+                    </Link>
+                    <Link
+                      href="/signup"
+                      className="button h-50 px-40 -purple-1 -rounded text-white ml-30 xl:ml-20"
+                    >
+                      Sign up
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>

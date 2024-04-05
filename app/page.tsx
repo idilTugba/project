@@ -3,9 +3,6 @@ import { useEffect, useState } from "react";
 
 import Footer from "@/component/layout/footer/Footer";
 import Header from "@/component/layout/header/Header";
-import SignOut from "@/component/forms/SignOut";
-import { Provider } from "react-redux";
-import { Store } from "@/lib/redux/Store";
 
 export default function Home() {
   const [isSidebarClosed, setIsSidebarClosed] = useState<boolean>(false);
@@ -31,13 +28,10 @@ export default function Home() {
   }, []);
 
   return (
-    <Provider store={Store}>
-      <main>
-        <Header />
-        <div style={{ marginBottom: "30px" }}></div>
-        <SignOut />
-        <Footer />
-      </main>
-    </Provider>
+    <main>
+      <Header />
+      <div style={{ marginBottom: "330px" }}></div>
+      <Footer />
+    </main>
   );
 }

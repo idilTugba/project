@@ -5,7 +5,7 @@ import Links from "../component/links";
 
 export default function Footer() {
   return (
-    <div className="footer">
+    <footer className="footer">
       <div className="container">
         <div className="py-30 border-top-light">
           <div className="row items-center justify-between">
@@ -36,6 +36,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-    </div>
+    </footer>
   );
 }

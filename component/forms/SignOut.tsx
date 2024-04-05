@@ -9,5 +9,12 @@ export default function SignOut() {
     sessionStorage.removeItem("user");
     console.log(sessionStorage.getItem("user"));
   };
-  return <button onClick={handleSignOut}>Sign Out</button>;
+  return (
+    <button
+      className="button py-10 px-10 -purple-1 text-white ml-30 xl:ml-20"
+      onClick={handleSignOut}
+    >
+      Sign Out
+    </button>
+  );
 }
