@@ -3,10 +3,14 @@ import { useEffect, useState } from "react";
 
 import Footer from "@/component/layout/footer/Footer";
 import Header from "@/component/layout/header/Header";
+import HomePage from "@/component/homes/Home";
+import { loginSuccess } from "@/lib/redux/reducers/userSlice";
+import { useDispatch } from "react-redux";
 
 export default function Home() {
   const [isSidebarClosed, setIsSidebarClosed] = useState<boolean>(false);
   const [messageOpen, setMessageOpen] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (window.innerWidth < 990) {
@@ -27,10 +31,15 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    // dispatch(loginSuccess(sessionStorage.getItem("user")));
+  });
+
   return (
     <main>
       <Header />
-      <div style={{ marginBottom: "330px" }}></div>
+      <HomePage />
+
       <Footer />
     </main>
   );

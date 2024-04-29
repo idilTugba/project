@@ -10,20 +10,22 @@ export default function Header() {
   const [activeMobileMenu, setActiveMobileMenu] = useState<boolean>(false);
 
   const [scrollPosition, setScrollPosition] = useState<number>(0);
-  const { user, isAuthenticated } = useAppSelector((state) => state.auth);
-  console.log(user);
-  useEffect(() => {
-    const handleScroll = () => {
-      const position = window.scrollY;
-      setScrollPosition(position);
-    };
+  const user = useAppSelector((state) => state.auth);
+  // console.log(user);
+  // console.log(sessionStorage.getItem("user"));
 
-    window.addEventListener("scroll", handleScroll);
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const position = window.scrollY;
+  //     setScrollPosition(position);
+  //   };
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  //   window.addEventListener("scroll", handleScroll);
+
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
 
   return (
     <header
@@ -70,9 +72,9 @@ export default function Header() {
               </div>
 
               <div className="header-right__buttons d-flex items-center ml-30 xl:ml-20 lg:d-none">
-                {isAuthenticated ? (
+                {user.isAuthenticated ? (
                   <>
-                    <p>Hoşgeldin {user}</p>
+                    <p>Hoşgeldin {user.userName}</p>
                     <SignOut />
                   </>
                 ) : (

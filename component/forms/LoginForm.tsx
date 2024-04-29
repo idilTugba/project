@@ -11,6 +11,7 @@ import Input from "./elements/Input";
 import Button from "./elements/Button";
 import { loginSuccess } from "@/lib/redux/reducers/userSlice";
 import { useDispatch } from "react-redux";
+import { useAppSelector } from "@/lib/redux/Hooks";
 
 interface formType {
   email: string;
@@ -49,13 +50,16 @@ export default function LoginForm() {
       });
 
       const { message, user } = await res.json();
-      console.log(user);
+
       if (!user) {
         console.log("Bağlantı başarısız");
       } else {
-        dispatch(loginSuccess(user.userName));
-        sessionStorage.setItem("user", user);
-        alert(`${message} , Hoşgeldin ${user.userName}`);
+        console.log("Dispatching login success:", user);
+        dispatch(loginSuccess(user));
+        sessionStorage.setItem("user", JSON.stringify(user));
+        alert(
+          `${message} , Hoşgeldin ${user.userName} Anasayfa'ya yönlendiriliyorsun!`
+        );
 
         router.push("/");
       }
