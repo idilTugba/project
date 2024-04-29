@@ -44,7 +44,7 @@ export default function LoginForm() {
   const onSubmit: SubmitHandler<formType> = async (data) => {
     try {
       console.log("API URL:", process.env.NEXT_APP_API_URL);
-      const res = await fetch(`${process.env.NEXT_APP_API_URL}/login`, {
+      const res = await fetch(`${window.location.origin}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

@@ -64,7 +64,7 @@ export default function SignUpForm() {
   const onSubmit: SubmitHandler<registerFormType> = async (data) => {
     console.log(data);
     try {
-      const res = await fetch(`${process.env.NEXT_APP_API_URL}/register`, {
+      const res = await fetch(`${window.location.origin}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
